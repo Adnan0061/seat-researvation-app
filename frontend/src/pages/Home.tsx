@@ -5,10 +5,10 @@ import { EventsList } from "@/components/EventsList";
 import { ArrowRight, Calendar } from "lucide-react";
 
 export function HomePage() {
-  const { events } = useEventsStore((state) => ({
-    events: state.events.slice(0, 3), // Show only first 3 events
-  }));
-
+  //   const { events } = useEventsStore((state) => ({
+  //     events: state.events.slice(0, 3), // Show only first 3 events
+  //   }));
+  //   console.log("Events from store:", events);
   return (
     <div className="space-y-16 py-8">
       {/* Hero Section */}
@@ -45,7 +45,7 @@ export function HomePage() {
           </Button>
         </div>
 
-        <EventsList events={events} />
+        {/* {events && <EventsList events={events} />} */}
       </section>
 
       {/* Features Section */}

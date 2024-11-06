@@ -4,6 +4,7 @@ import { router } from "./router";
 import { StoreProvider } from "./providers/StoreProvider";
 import { AuthProvider } from "./context/auth-context";
 import { Toaster } from "./components/ui/toaster";
+import { useAuth } from "./hooks/useAuth";
 
 // const queryClient = new QueryClient();
 const queryClient = new QueryClient({
@@ -16,11 +17,12 @@ const queryClient = new QueryClient({
 });
 
 export function App() {
+  const auth = useAuth();
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <StoreProvider>
-          <RouterProvider router={router} />
+          <RouterProvider router={router} context={{ auth }} />
           <Toaster />
         </StoreProvider>
       </AuthProvider>

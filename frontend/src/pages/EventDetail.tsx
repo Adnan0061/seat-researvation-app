@@ -6,10 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/context/auth-context";
+// import { useAuth } from "@/context/auth-context";
 import { formatDate } from "@/lib/utils";
 import { Calendar, MapPin, Users } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { useAuth } from "@/hooks/useAuth";
 
 export function EventDetailPage() {
   const { eventId } = useParams({ from: "/events/$eventId" });

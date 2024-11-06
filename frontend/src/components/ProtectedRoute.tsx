@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
-import { useAuth } from "@/context/auth-context";
+// import { useAuth } from "@/context/auth-context";
 import { Navigate } from "@tanstack/react-router";
 import { Spinner } from "./ui/spinner";
+import { useAuth } from "@/hooks/useAuth";
 
 interface ProtectedRouteProps {
   children: ReactNode;

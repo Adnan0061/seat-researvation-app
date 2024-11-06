@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect } from "react";
-import { useNavigate } from "@tanstack/react-router";
+// import { useNavigate } from "@tanstack/react-router";
 import { useAuthStore } from "@/stores/useAuthStore";
 import type { User } from "@/types";
 
@@ -13,7 +13,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const {
     user,
     token,
@@ -29,12 +29,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     await storeLogin(email, password);
-    navigate({ to: "/" });
+    // navigate({ to: "/" });
   };
 
   const logout = () => {
     storeLogout();
-    navigate({ to: "/login" });
+    // navigate({ to: "/login" });
   };
 
   const value = {
@@ -55,10 +55,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-}
+// export function useAuth() {
+//   const context = useContext(AuthContext);
+//   if (context === undefined) {
+//     throw new Error("useAuth must be used within an AuthProvider");
+//   }
+//   return context;
+// }

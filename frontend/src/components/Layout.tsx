@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { useAuth } from "@/context/auth-context";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -8,12 +7,14 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { UserCircle } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { Outlet } from "@tanstack/react-router";
 
-export function Layout({ children }: { children: React.ReactNode }) {
-  // const { user, logout } = useAuth();
+export function Layout() {
+  const { user, logout } = useAuth();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="h-screen w-screen bg-background" data-component="layout">
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link to="/" className="text-xl font-bold">
@@ -24,7 +25,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <Link to="/events" className="hover:text-primary">
               Events
             </Link>
-            {/* 
+
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -53,12 +54,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <Link to="/register">Register</Link>
                 </Button>
               </div>
-            )} */}
+            )}
           </nav>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">{children}</main>
+      <main className="container mx-auto px-4 py-8">
+        <Outlet />
+      </main>
     </div>
   );
 }

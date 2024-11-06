@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useAuth } from "@/context/auth-context";
+// import { useAuth } from "@/context/auth-context";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { loginSchema } from "@/lib/schemas";
 import { Link } from "@tanstack/react-router";
+import { useAuth } from "@/hooks/useAuth";
 
 type LoginForm = z.infer<typeof loginSchema>;
 

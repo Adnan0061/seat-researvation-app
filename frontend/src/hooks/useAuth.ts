@@ -15,3 +15,7 @@ export function useAuth() {
     logout: store.logout,
   };
 }
+
+export interface AuthContext {
+  auth: ReturnType<typeof useAuth>;
+}

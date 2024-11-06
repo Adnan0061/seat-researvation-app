@@ -1,4 +1,4 @@
-import { Router, Route, RootRoute, redirect } from "@tanstack/react-router";
+import { redirect, createRootRoute, createRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { Layout } from "./components/Layout";
 import { HomePage } from "./pages/Home";
@@ -8,37 +8,41 @@ import { EventsPage } from "./pages/Events";
 import { EventDetailPage } from "./pages/EventDetail";
 import { AdminEventsPage } from "./pages/admin/Events";
 import { UserReservationsPage } from "./pages/UserReservations";
-import { useAuth } from "@/context/auth-context";
+import { AuthContext } from "./hooks/useAuth";
+import { createRouter } from "@tanstack/react-router";
 
-const rootRoute = new RootRoute({
+const rootRoute = createRootRoute({
   component: Layout,
 });
 
-const indexRoute = new Route({
+const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
   component: HomePage,
+  beforeLoad: () => {
+    console.log("Loading HomePage route");
+  },
 });
 
-const loginRoute = new Route({
+const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/login",
   component: LoginPage,
 });
 
-const registerRoute = new Route({
+const registerRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/register",
   component: RegisterPage,
 });
 
-const eventsRoute = new Route({
+const eventsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/events",
   component: EventsPage,
 });
 
-const eventDetailRoute = new Route({
+const eventDetailRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/events/$eventId",
   component: EventDetailPage,
@@ -47,25 +51,26 @@ const eventDetailRoute = new Route({
   }),
 });
 
-const adminEventsRoute = new Route({
+const adminEventsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/admin/events",
   component: AdminEventsPage,
-  beforeLoad: () => {
-    const { user } = useAuth();
-    if (!user || user.role !== "admin") {
+  beforeLoad: ({ context }) => {
+    const { auth } = context as AuthContext;
+    if (!auth.user || auth.user.role !== "admin") {
       throw redirect({ to: "/" });
     }
   },
 });
 
-const userReservationsRoute = new Route({
+const userReservationsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/reservations",
   component: UserReservationsPage,
-  beforeLoad: () => {
-    const { user } = useAuth();
-    if (!user) {
+  beforeLoad: ({ context }) => {
+    console.log("context", context);
+    const { auth } = context as AuthContext;
+    if (!auth.user) {
       throw redirect({ to: "/login" });
     }
   },
@@ -81,7 +86,13 @@ const routeTree = rootRoute.addChildren([
   userReservationsRoute,
 ]);
 
-export const router = new Router({ routeTree });
+export const router = createRouter({
+  routeTree,
+  defaultPreload: "intent",
+  context: {
+    auth: undefined!,
+  },
+});
 
 declare module "@tanstack/react-router" {
   interface Register {
