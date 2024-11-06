@@ -1,0 +1,20 @@
+components:
+  schemas:
+    RateLimitError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Too many requests from this IP, please try again later"
+        retryAfter:
+          type: number
+          example: 900
+          description: Time in seconds until the limit resets
+
+  responses:
+    TooManyRequests:
+      description: Too many requests
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RateLimitError"

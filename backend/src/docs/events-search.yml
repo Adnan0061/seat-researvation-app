@@ -1,0 +1,74 @@
+/api/events/search:
+  get:
+    tags:
+      - Events
+    summary: Search and filter events
+    description: Search events with various filters and pagination
+    parameters:
+      - in: query
+        name: query
+        schema:
+          type: string
+        description: Search term for title and description
+      - in: query
+        name: startDate
+        schema:
+          type: string
+          format: date
+        description: Filter events starting from this date
+      - in: query
+        name: endDate
+        schema:
+          type: string
+          format: date
+        description: Filter events until this date
+      - in: query
+        name: minPrice
+        schema:
+          type: number
+        description: Minimum price filter
+      - in: query
+        name: maxPrice
+        schema:
+          type: number
+        description: Maximum price filter
+      - in: query
+        name: hasAvailableSeats
+        schema:
+          type: boolean
+        description: Filter events with available seats
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          default: 10
+        description: Number of events to return
+      - in: query
+        name: skip
+        schema:
+          type: integer
+          default: 0
+        description: Number of events to skip (for pagination)
+    responses:
+      200:
+        description: List of filtered events
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                events:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Event"
+                total:
+                  type: number
+                  description: Total number of matching events
+                page:
+                  type: number
+                  description: Current page number
+                totalPages:
+                  type: number
+                  description: Total number of pages
+      429:
+        $ref: "#/components/responses/TooManyRequests"
