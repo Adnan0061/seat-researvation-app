@@ -10,6 +10,7 @@ import { AdminEventsPage } from "./pages/admin/Events";
 import { UserReservationsPage } from "./pages/UserReservations";
 import { AuthContext } from "./hooks/useAuth";
 import { createRouter } from "@tanstack/react-router";
+import { authGuard } from "./lib/routeGuard";
 
 const rootRoute = createRootRoute({
   component: Layout,
@@ -27,6 +28,19 @@ const indexRoute = createRoute({
 const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/login",
+  beforeLoad: async ({ location, context }) => {
+    // console.log("location", location);
+    // console.log("context", context);
+    // // authGuard({ to: location.pathname as "/login" });
+    // return authGuard(
+    //   { to: location.pathname as "/login" },
+    //   context as AuthContext
+    // );
+    const { auth } = context as AuthContext;
+    if (auth.user) {
+      throw redirect({ to: "/" });
+    }
+  },
   component: LoginPage,
 });
 
@@ -34,6 +48,16 @@ const registerRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/register",
   component: RegisterPage,
+  beforeLoad: async ({ context }) => {
+    // return authGuard(
+    //   { to: location.pathname as "/login" },
+    //   context as AuthContext
+    // );
+    const { auth } = context as AuthContext;
+    if (auth.user) {
+      throw redirect({ to: "/" });
+    }
+  },
 });
 
 const eventsRoute = createRoute({
@@ -46,6 +70,9 @@ const eventDetailRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/events/$eventId",
   component: EventDetailPage,
+  // params: z.object({
+  //   eventId: z.string(),
+  // }),
   validateParams: (params) => ({
     eventId: z.string().parse(params.eventId),
   }),

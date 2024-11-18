@@ -39,6 +39,7 @@ export function UserReservationsPage() {
     );
   }
 
+  console.log(reservations);
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">My Reservations</h1>
@@ -68,8 +69,8 @@ export function UserReservationsPage() {
                     reservation.status === "confirmed"
                       ? "default"
                       : reservation.status === "pending"
-                      ? "secondary"
-                      : "destructive"
+                        ? "secondary"
+                        : "destructive"
                   }
                 >
                   {reservation.status}

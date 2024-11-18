@@ -5,15 +5,15 @@ import { Badge } from "./ui/badge";
 import { Link } from "@tanstack/react-router";
 import { Button } from "./ui/button";
 
-interface EventsListProps {
-  events: Event[];
+interface SearchedEventsListProps {
+  events: { events: Event[]; page: number; total: number; totalPages: number };
 }
 
-export function EventsList({ events }: EventsListProps) {
-  console.log("events", events);
+export function SearchedEventsList({ events }: SearchedEventsListProps) {
+  console.log("SearchedEventsList", events);
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {events.map((event) => (
+      {events?.events?.map((event) => (
         <Card key={event.id}>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">

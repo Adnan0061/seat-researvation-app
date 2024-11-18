@@ -24,7 +24,7 @@ const register = async (req, res) => {
     });
 
     res.status(201).json({
-      _id: user._id,
+      id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
@@ -43,10 +43,12 @@ const login = async (req, res) => {
 
     if (user && (await user.matchPassword(password))) {
       res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
         token: generateToken(user._id),
       });
     } else {
@@ -58,5 +60,33 @@ const login = async (req, res) => {
     throw error;
   }
 };
+const validateToken = async (req, res) => {
+  try {
+    // User is already populated by protect middleware
+    const user = await User.findById(req.user.id).select("-password").lean();
 
-module.exports = { register, login };
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: "Invalid token",
+    });
+  }
+};
+
+module.exports = { register, login, validateToken };

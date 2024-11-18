@@ -31,31 +31,34 @@ interface EventFormProps {
 }
 
 export function EventForm({ event, open, onClose, onSubmit }: EventFormProps) {
+  console.log("event", event);
   const form = useForm<EventFormData>({
     resolver: zodResolver(eventSchema),
-    defaultValues: event
-      ? {
-          title: event.title,
-          description: event.description,
-          date: new Date(event.date).toISOString().slice(0, 16),
-          totalSeats: event.totalSeats,
-          price: event.price,
-        }
-      : {
-          title: "",
-          description: "",
-          date: "",
-          totalSeats: 0,
-          price: 0,
-        },
+    defaultValues: /*event
+      ?*/ {
+      title: event?.title,
+      description: event?.description,
+      // date: new Date(event?.date ?? "")?.toISOString()?.slice(0, 16),
+      // date: event?.date,
+      totalSeats: event?.totalSeats,
+      price: event?.price,
+    },
+    // : {
+    //     title: "",
+    //     description: "",
+    //     date: "",
+    //     totalSeats: 0,
+    //     price: 0,
+    //   },
   });
 
   const handleSubmit = async (data: EventFormData) => {
+    console.log("create event data", data);
     await onSubmit(data);
     onClose();
     form.reset();
   };
-
+  console.log("event", event);
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
@@ -71,9 +74,10 @@ export function EventForm({ event, open, onClose, onSubmit }: EventFormProps) {
             <FormField
               control={form.control}
               name="title"
+              defaultValue={event?.title}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel>Title:</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -85,6 +89,7 @@ export function EventForm({ event, open, onClose, onSubmit }: EventFormProps) {
             <FormField
               control={form.control}
               name="description"
+              defaultValue={event?.description}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Description</FormLabel>
@@ -99,6 +104,12 @@ export function EventForm({ event, open, onClose, onSubmit }: EventFormProps) {
             <FormField
               control={form.control}
               name="date"
+              // defaultValue={event?.date}
+              defaultValue={
+                event?.date
+                  ? new Date(event.date).toISOString().slice(0, 16)
+                  : undefined
+              }
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Date</FormLabel>
@@ -114,6 +125,7 @@ export function EventForm({ event, open, onClose, onSubmit }: EventFormProps) {
               <FormField
                 control={form.control}
                 name="totalSeats"
+                defaultValue={event?.totalSeats}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Total Seats</FormLabel>
@@ -132,6 +144,7 @@ export function EventForm({ event, open, onClose, onSubmit }: EventFormProps) {
               <FormField
                 control={form.control}
                 name="price"
+                defaultValue={event?.price}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Price</FormLabel>

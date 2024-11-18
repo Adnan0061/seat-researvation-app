@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Event, Reservation, User } from "@/types";
+import { Event, Reservation, SearchedEvents, User } from "@/types";
 import { useAuthStore } from "@/stores/useAuthStore";
 
 const api = axios.create({
@@ -30,6 +30,7 @@ export const authApi = {
       "/auth/login",
       credentials
     );
+    console.log("login data", data);
     return data;
   },
 
@@ -42,30 +43,44 @@ export const authApi = {
       "/auth/register",
       userData
     );
+    console.log("register data", data);
     return data;
   },
 
   validateToken: async (): Promise<User> => {
-    const response = await fetch("/api/auth/validate", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    if (!response.ok) throw new Error("Invalid token");
-    return response.json();
+    const { data } = await api.get<{ success: boolean; data: User }>(
+      "/auth/validate"
+    );
+    console.log("validateToken data", data);
+    return data.data;
   },
 };
 
 export const eventApi = {
-  getAll: async (params?: {
+  getAll: async (/*-params?: {
     query?: string;
     startDate?: string;
     endDate?: string;
     minPrice?: number;
     maxPrice?: number;
     hasAvailableSeats?: boolean;
+  }*/) => {
+    // console.log("getAll params", params);
+    const { data } = await api.get<Event[]>("/events" /*, { params }*/);
+    return data;
+  },
+  getSearched: async (params?: {
+    query?: string;
+    startDate?: string;
+    endDate?: string;
+    minPrice?: string;
+    maxPrice?: string;
+    hasAvailableSeats?: boolean;
   }) => {
-    const { data } = await api.get<Event[]>("/events", { params });
+    console.log("getAll params", params);
+    const { data } = await api.get<SearchedEvents>("/events/search", {
+      params,
+    });
     return data;
   },
 

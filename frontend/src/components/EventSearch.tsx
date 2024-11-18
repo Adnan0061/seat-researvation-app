@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { EventFilters } from "@/types/store";
 
 const searchSchema = z.object({
   query: z.string().optional(),
@@ -25,19 +26,13 @@ type SearchForm = z.infer<typeof searchSchema>;
 
 interface EventSearchProps {
   onSearch: (params: SearchForm) => void;
+  filters: EventFilters;
 }
 
-export function EventSearch({ onSearch }: EventSearchProps) {
+export function EventSearch({ onSearch, filters }: EventSearchProps) {
   const form = useForm<SearchForm>({
     resolver: zodResolver(searchSchema),
-    defaultValues: {
-      query: "",
-      startDate: "",
-      endDate: "",
-      minPrice: "",
-      maxPrice: "",
-      hasAvailableSeats: false,
-    },
+    defaultValues: filters,
   });
 
   return (

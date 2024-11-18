@@ -1,92 +1,89 @@
 import { create } from "zustand";
 import { type EventsState, type EventFilters } from "@/types/store";
 import { eventApi } from "@/lib/api";
-import {
-  logger,
-  validator,
-  immer,
-  createDevtools,
-  // performance,
-  // createPersist,
-} from "@/lib/middleware";
+import { logger, validator, immer, createDevtools } from "@/lib/middleware";
 import { performance } from "@/lib/middleware/performance";
 import { createPersist } from "@/lib/middleware/persist";
 
 const defaultFilters: EventFilters = {
   query: "",
-  startDate: null,
-  endDate: null,
-  minPrice: null,
-  maxPrice: null,
+  startDate: undefined,
+  endDate: undefined,
+  minPrice: undefined,
+  maxPrice: undefined,
   hasAvailableSeats: false,
 };
 
 // Validators
 const validators = {
-  events: (events: any) => Array.isArray(events),
-  filters: (filters: any) => typeof filters === "object" && filters !== null,
+  events: (events: Event[]) => Array.isArray(events),
+  filters: (filters: EventFilters) =>
+    typeof filters === "object" && filters !== null,
 };
 
 export const useEventsStore = create<EventsState>()(
-  logger(
-    validator(
-      immer(
-        performance(
-          createDevtools(
-            createPersist(
-              (set, get) => ({
-                events: [],
-                selectedEvent: null,
-                filters: defaultFilters,
-                isLoading: false,
-                error: null,
+  // logger(
+  // validator(
+  // immer(
+  //   performance(
+  //     createDevtools(
+  createPersist(
+    (set, get) => ({
+      events: { events: [], page: 0, total: 0, totalPages: 0 },
+      selectedEvent: null,
+      filters: defaultFilters,
+      isLoading: false,
+      error: null,
 
-                fetchEvents: async () => {
-                  set({ isLoading: true, error: null });
-                  try {
-                    const filters = get().filters;
-                    const events = await eventApi.getAll({
-                      ...filters,
-                      startDate: filters.startDate || undefined,
-                      endDate: filters.endDate || undefined,
-                      minPrice: filters.minPrice || undefined,
-                      maxPrice: filters.maxPrice || undefined,
-                    });
-                    set({ events, isLoading: false });
-                  } catch (error) {
-                    console.error(error);
-                    set({
-                      error: "Failed to fetch events",
-                      isLoading: false,
-                    });
-                  }
-                },
+      fetchEvents: async () => {
+        set({ isLoading: true, error: null });
+        try {
+          const filters = get().filters;
+          const events = await eventApi.getSearched({
+            ...filters,
+            startDate: filters.startDate || undefined,
+            endDate: filters.endDate || undefined,
+            minPrice: filters.minPrice || undefined,
+            maxPrice: filters.maxPrice || undefined,
+          });
+          console.log("events before set", events);
+          set({ events: events, isLoading: false });
+        } catch (error) {
+          console.error(error);
+          set({
+            error: "Failed to fetch events",
+            isLoading: false,
+          });
+        }
+      },
 
-                setFilters: (newFilters) => {
-                  set((state) => ({
-                    filters: { ...state.filters, ...newFilters },
-                  }));
-                  get().fetchEvents();
-                },
+      setFilters: (newFilters) => {
+        set((state) => ({
+          filters: { ...state.filters, ...newFilters },
+        }));
+        console.log("setFilters", newFilters);
+        get().fetchEvents();
+      },
 
-                selectEvent: (event) => {
-                  set({ selectedEvent: event });
-                },
-              }),
-              {
-                name: "events-storage",
-                partialize: (state) => ({
-                  filters: state.filters,
-                }),
-              }
-            ),
-            { name: "Events Store" }
-          ),
-          { name: "events", threshold: 100 }
-        )
-      ),
-      validators
-    ),
-    "events"
+      selectEvent: (event) => {
+        set({ selectedEvent: event });
+      },
+    }),
+    {
+      name: "events-storage",
+      storage: localStorage,
+      partialize: (state) => ({
+        filters: state.filters,
+      }),
+    }
   )
+  //       { name: "Events Store" }
+  //     ),
+  //     { name: "events", threshold: 100 }
+  //   )
+  // )
+  //   validators
+  // ),
+  //   "events"
+  // )
 );

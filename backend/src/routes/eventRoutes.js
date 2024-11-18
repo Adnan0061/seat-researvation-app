@@ -13,13 +13,14 @@ const { searchLimiter } = require("../middleware/rateLimiter");
 
 router.route("/").get(getEvents).post(protect, isAdmin, createEvent);
 
+// Apply search rate limiter to search endpoint
+// router.get("/search", searchLimiter, searchEvents);
+router.route("/search").get(searchEvents);
+
 router
   .route("/:id")
   .get(getEventById)
   .put(protect, isAdmin, updateEvent)
   .delete(protect, isAdmin, deleteEvent);
-
-// Apply search rate limiter to search endpoint
-router.get("/search", searchLimiter, searchEvents);
 
 module.exports = router;

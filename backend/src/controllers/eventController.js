@@ -1,5 +1,6 @@
 const Event = require("../models/Event");
 const { validateSearchParams } = require("../utils/validation");
+const mongoose = require("mongoose");
 
 const createEvent = async (req, res) => {
   try {
@@ -52,8 +53,8 @@ const deleteEvent = async (req, res) => {
       throw new Error("Event not found");
     }
 
-    await event.remove();
-    res.json({ message: "Event removed" });
+    await event.deleteOne();
+    res.json({ message: `Event ${event.title} removed` });
   } catch (error) {
     res.status(400);
     throw error;
@@ -61,12 +62,22 @@ const deleteEvent = async (req, res) => {
 };
 
 const getEvents = async (req, res) => {
+  console.log("getEvents request received");
   try {
+    // Check if mongoose is connected
+    if (mongoose.connection.readyState !== 1) {
+      throw new Error("Database not connected");
+    }
+
     const events = await Event.find({});
+    console.log("events", events);
     res.json(events);
   } catch (error) {
-    res.status(400);
-    throw error;
+    console.error("Error in getEvents:", error);
+    res.status(500).json({
+      message: "Error fetching events",
+      error: error.message,
+    });
   }
 };
 
@@ -86,8 +97,14 @@ const getEventById = async (req, res) => {
   }
 };
 
+// const searchEvents = async (req, res) => {
+//   console.log("searchEvents request received");
+//   // res.json(req.query);
+// };
+
 const searchEvents = async (req, res) => {
   try {
+    console.log("searchEvents request received", req.query);
     const {
       query,
       startDate,

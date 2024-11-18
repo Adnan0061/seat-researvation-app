@@ -15,9 +15,16 @@ export interface Event {
   price: number;
 }
 
+export interface SearchedEvents {
+  events: Event[];
+  page: number;
+  total: number;
+  totalPages: number;
+}
+
 export interface Reservation {
   id: string;
-  eventId: string;
+  event: Event;
   userId: string;
   numberOfSeats: number;
   status: "pending" | "confirmed" | "cancelled";

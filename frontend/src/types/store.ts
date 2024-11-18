@@ -1,4 +1,9 @@
-import { type Event, type User, type Reservation } from "./index";
+import {
+  type Event,
+  type User,
+  type Reservation,
+  SearchedEvents,
+} from "./index";
 
 export interface AuthState {
   user: User | null;
@@ -10,11 +15,12 @@ export interface AuthState {
 }
 
 export interface EventsState {
-  events: Event[];
+  events: SearchedEvents;
   selectedEvent: Event | null;
   filters: EventFilters;
   isLoading: boolean;
   error: string | null;
+  // initialize: () => Promise<void>;
   fetchEvents: () => Promise<void>;
   setFilters: (filters: Partial<EventFilters>) => void;
   selectEvent: (event: Event | null) => void;
@@ -22,10 +28,10 @@ export interface EventsState {
 
 export interface EventFilters {
   query: string;
-  startDate: string | null;
-  endDate: string | null;
-  minPrice: number | null;
-  maxPrice: number | null;
+  startDate: string | undefined;
+  endDate: string | undefined;
+  minPrice: string | undefined;
+  maxPrice: string | undefined;
   hasAvailableSeats: boolean;
 }
 

@@ -11,29 +11,37 @@ export const useAuthStore = create<AuthState>()(
       isLoading: true,
 
       initialize: async () => {
+        const authStorage = localStorage.getItem("auth-storage");
+        const token = authStorage ? JSON.parse(authStorage).state.token : null;
+        let user = null;
         try {
-          const token = localStorage.getItem("token");
+          set({ isLoading: true });
+
           if (!token) {
             set({ isLoading: false });
             return;
           }
 
-          const user = await authApi.validateToken(token);
-          set({ user, token, isLoading: false });
+          try {
+            user = await authApi.validateToken();
+            console.log("user at store", user);
+            set({ user, token, isLoading: false });
+          } catch (error) {
+            console.log("auth validation error", error);
+            set({ user: null, token: null, isLoading: false });
+          }
         } catch (error) {
-          localStorage.removeItem("token");
+          console.log("initialization error", error);
           set({ user: null, token: null, isLoading: false });
         }
       },
 
       login: async (email: string, password: string) => {
         const { token, user } = await authApi.login({ email, password });
-        localStorage.setItem("token", token);
         set({ token, user, isLoading: false });
       },
 
       logout: () => {
-        localStorage.removeItem("token");
         set({ user: null, token: null });
       },
     }),

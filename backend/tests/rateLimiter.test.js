@@ -1,16 +1,7 @@
 const request = require("supertest");
 const app = require("../src/app");
-const Redis = require("ioredis-mock");
-
-// Mock Redis client
-jest.mock("ioredis", () => require("ioredis-mock"));
 
 describe("Rate Limiter Middleware", () => {
-  beforeEach(async () => {
-    const redis = new Redis();
-    await redis.flushall();
-  });
-
   describe("API Rate Limiting", () => {
     it("should allow requests within the rate limit", async () => {
       const responses = await Promise.all(

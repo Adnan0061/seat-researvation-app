@@ -4,7 +4,7 @@ export const performance =
   <
     T extends object,
     Mps extends [StoreMutatorIdentifier, unknown][] = [],
-    Mcs extends [StoreMutatorIdentifier, unknown][] = []
+    Mcs extends [StoreMutatorIdentifier, unknown][] = [],
   >(
     f: StateCreator<T, Mps, Mcs>,
     options: {
@@ -16,9 +16,9 @@ export const performance =
     const { name = "store", threshold = 16 } = options;
 
     const measureSet: typeof set = (...args) => {
-      const start = performance.now();
+      const start = window.performance.now();
       const result = set(...args);
-      const end = performance.now();
+      const end = window.performance.now();
       const duration = end - start;
 
       if (duration > threshold) {

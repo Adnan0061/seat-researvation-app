@@ -1,18 +1,18 @@
 import { useEffect } from "react";
 import { useEventsStore } from "@/stores/useEventsStore";
-import { useStoreDebug } from "@/hooks/useStoreDebug";
-import { EventsList } from "@/components/EventsList";
+// import { useStoreDebug } from "@/hooks/useStoreDebug";
 import { EventSearch } from "@/components/EventSearch";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
+import { SearchedEventsList } from "@/components/SearchedEventsList";
 
 export function EventsPage() {
   const store = useEventsStore();
 
   // Debug store in development
-  if (process.env.NODE_ENV === "development") {
-    useStoreDebug(useEventsStore, "Events");
-  }
+  // if (process.env.NODE_ENV === "development") {
+  //   useStoreDebug(useEventsStore, "Events");
+  // }
 
   useEffect(() => {
     store.fetchEvents();
@@ -28,17 +28,16 @@ export function EventsPage() {
       </div>
     );
   }
-
   return (
     <div className="space-y-6">
-      <EventSearch onSearch={store.setFilters} />
+      <EventSearch onSearch={store.setFilters} filters={store.filters} />
 
       {store.isLoading ? (
         <div className="flex justify-center py-12">
           <Spinner size="lg" />
         </div>
       ) : (
-        <EventsList events={store.events} />
+        <SearchedEventsList events={store.events} />
       )}
     </div>
   );

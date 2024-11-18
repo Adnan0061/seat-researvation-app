@@ -21,7 +21,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Plus, Edit, Trash } from "lucide-react";
-// import { useToast } from "@/components/ui/use-toast";
 import { type Event } from "@/types";
 import { formatDate } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -36,7 +35,7 @@ export function AdminEventsPage() {
 
   const { data: events = [], isLoading } = useQuery({
     queryKey: ["admin-events"],
-    queryFn: eventApi.getAll,
+    queryFn: () => eventApi.getAll(),
   });
 
   const createMutation = useMutation({
@@ -136,9 +135,9 @@ export function AdminEventsPage() {
               <TableCell>{formatDate(event.date)}</TableCell>
               <TableCell>{event.availableSeats}</TableCell>
               <TableCell>${event.price}</TableCell>
-              <TableCell className="text-right">
+              <TableCell className="flex justify-end gap-1">
                 <Button
-                  variant="ghost"
+                  variant="default"
                   size="icon"
                   onClick={() => {
                     setSelectedEvent(event);
@@ -148,7 +147,7 @@ export function AdminEventsPage() {
                   <Edit className="h-4 w-4" />
                 </Button>
                 <Button
-                  variant="ghost"
+                  variant="default"
                   size="icon"
                   onClick={() => setDeleteEventId(event.id)}
                 >

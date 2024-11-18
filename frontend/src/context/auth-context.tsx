@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect } from "react";
-// import { useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useAuthStore } from "@/stores/useAuthStore";
 import type { User } from "@/types";
 
@@ -16,7 +16,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // const navigate = useNavigate();
   const {
     user,
-    token,
+    // token,
     login: storeLogin,
     logout: storeLogout,
     initialize,
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="w-full h-full flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
       </div>
     );

@@ -6,7 +6,7 @@ const emailService = require("../services/emailService");
 const createReservation = async (req, res) => {
   try {
     const { eventId, numberOfSeats } = req.body;
-    const userId = req.user._id;
+    const userId = req.user.id;
 
     const reservation = await reservationService.createReservation(
       eventId,
@@ -27,7 +27,7 @@ const createReservation = async (req, res) => {
 const getUserReservations = async (req, res) => {
   try {
     const reservations = await Reservation.find({
-      userId: req.user._id,
+      userId: req.user.id,
     }).populate("eventId");
     res.json(reservations);
   } catch (error) {

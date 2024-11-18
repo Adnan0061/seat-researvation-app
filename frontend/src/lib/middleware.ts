@@ -32,14 +32,18 @@ export const validator: ValidatorMiddleware =
   (f, validators = {}) =>
   (set, get, store) => {
     const validatedSet: typeof set = (...args) => {
-      const newState = typeof args[0] === "function" ? args[0](get()) : args[0];
+      // Get the new state, handling both direct state updates and updater functions
+      const newState =
+        typeof args[0] === "function"
+          ? args[0](get())
+          : { ...get(), ...args[0] }; // Merge with current state for partial updates
 
-      // Validate each field with its corresponding validator
-      Object.entries(validators).forEach(([key, validateFn]) => {
+      // Only validate fields that are present in the validators config
+      for (const [key, validateFn] of Object.entries(validators)) {
         if (key in newState && !validateFn(newState[key])) {
-          throw new Error(`Invalid value for ${key}`);
+          throw new Error(`Validation failed for "${key}"`);
         }
-      });
+      }
 
       return set(...args);
     };

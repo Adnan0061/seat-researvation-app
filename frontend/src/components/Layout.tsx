@@ -12,24 +12,24 @@ import { Outlet } from "@tanstack/react-router";
 
 export function Layout() {
   const { user, logout } = useAuth();
-
+  console.log("user at layout", user);
   return (
-    <div className="h-screen w-screen bg-background" data-component="layout">
-      <header className="border-b">
+    <div className="w-full h-full" data-component="layout">
+      <header className="border-b w-full">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="text-xl font-bold">
+          <Link to="/" className="text-xl font-bold text-primary">
             Event Reservation
           </Link>
 
           <nav className="flex items-center gap-4">
-            <Link to="/events" className="hover:text-primary">
+            <Link to="/events" className="text-primary hover:text-primary/70">
               Events
             </Link>
 
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
+                  <Button variant="default" size="icon">
                     <UserCircle className="h-5 w-5" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -47,7 +47,7 @@ export function Layout() {
               </DropdownMenu>
             ) : (
               <div className="flex gap-2">
-                <Button asChild variant="ghost">
+                <Button asChild variant="secondary">
                   <Link to="/login">Login</Link>
                 </Button>
                 <Button asChild>

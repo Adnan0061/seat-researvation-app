@@ -61,4 +61,35 @@ describe("Auth Endpoints", () => {
       expect(res.statusCode).toBe(401);
     });
   });
+
+  describe("GET /api/auth/validate", () => {
+    it("should validate token successfully", async () => {
+      // First register a user
+      const registerRes = await request(app).post("/api/auth/register").send({
+        name: "Test User",
+        email: "test@example.com",
+        password: "password123",
+      });
+
+      const token = registerRes.body.token;
+
+      // Then validate the token
+      const validateRes = await request(app)
+        .get("/api/auth/validate")
+        .set("Authorization", `Bearer ${token}`);
+
+      expect(validateRes.status).toBe(200);
+      expect(validateRes.body.success).toBe(true);
+      expect(validateRes.body.data).toHaveProperty("email", "test@example.com");
+    });
+
+    it("should fail with invalid token", async () => {
+      const res = await request(app)
+        .get("/api/auth/validate")
+        .set("Authorization", "Bearer invalid_token");
+
+      expect(res.status).toBe(401);
+      expect(res.body.success).toBe(false);
+    });
+  });
 });

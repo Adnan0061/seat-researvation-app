@@ -28,6 +28,16 @@ const reservationSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: {
+      transform: function (doc, ret) {
+        ret.id = ret._id.toString();
+        ret.event = ret.eventId;
+        delete ret._id;
+        delete ret.eventId;
+        delete ret.__v;
+        return ret;
+      },
+    },
   }
 );
 

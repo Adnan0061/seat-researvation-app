@@ -13,13 +13,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { loginSchema } from "@/lib/schemas";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/useAuth";
 
 type LoginForm = z.infer<typeof loginSchema>;
 
 export function LoginPage() {
   const { login } = useAuth();
+  const navigate = useNavigate();
+
   const form = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -31,6 +33,7 @@ export function LoginPage() {
   const onSubmit = async (data: LoginForm) => {
     try {
       await login(data.email, data.password);
+      navigate({ to: "/" });
     } catch (error) {
       console.error(error);
       form.setError("root", {
