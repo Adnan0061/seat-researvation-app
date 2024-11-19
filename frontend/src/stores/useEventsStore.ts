@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { type EventsState, type EventFilters } from "@/types/store";
 import { eventApi } from "@/lib/api";
-import { logger, validator, immer, createDevtools } from "@/lib/middleware";
-import { performance } from "@/lib/middleware/performance";
+// import { logger, validator, immer, createDevtools } from "@/lib/middleware";
+// import { performance } from "@/lib/middleware/performance";
 import { createPersist } from "@/lib/middleware/persist";
 
 const defaultFilters: EventFilters = {
@@ -15,11 +15,11 @@ const defaultFilters: EventFilters = {
 };
 
 // Validators
-const validators = {
-  events: (events: Event[]) => Array.isArray(events),
-  filters: (filters: EventFilters) =>
-    typeof filters === "object" && filters !== null,
-};
+// const validators = {
+//   events: (events: Event[]) => Array.isArray(events),
+//   filters: (filters: EventFilters) =>
+//     typeof filters === "object" && filters !== null,
+// };
 
 export const useEventsStore = create<EventsState>()(
   // logger(

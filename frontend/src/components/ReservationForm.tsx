@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { reservationSchema } from "@/lib/schemas";
-import { type Event } from "@/types";
+import { type Reservation, type Event } from "@/types";
 import {
   Form,
   FormControl,
@@ -19,7 +19,7 @@ type ReservationFormData = z.infer<typeof reservationSchema>;
 
 interface ReservationFormProps {
   event: Event;
-  onSubmit: (data: ReservationFormData) => Promise<void>;
+  onSubmit: (data: ReservationFormData) => Promise<Reservation>;
 }
 
 export function ReservationForm({ event, onSubmit }: ReservationFormProps) {

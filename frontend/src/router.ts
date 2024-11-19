@@ -10,7 +10,6 @@ import { AdminEventsPage } from "./pages/admin/Events";
 import { UserReservationsPage } from "./pages/UserReservations";
 import { AuthContext } from "./hooks/useAuth";
 import { createRouter } from "@tanstack/react-router";
-import { authGuard } from "./lib/routeGuard";
 
 const rootRoute = createRootRoute({
   component: Layout,
@@ -28,7 +27,7 @@ const indexRoute = createRoute({
 const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/login",
-  beforeLoad: async ({ location, context }) => {
+  beforeLoad: async ({ context }) => {
     // console.log("location", location);
     // console.log("context", context);
     // // authGuard({ to: location.pathname as "/login" });
@@ -70,12 +69,12 @@ const eventDetailRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/events/$eventId",
   component: EventDetailPage,
-  // params: z.object({
-  //   eventId: z.string(),
-  // }),
-  validateParams: (params) => ({
-    eventId: z.string().parse(params.eventId),
+  params: z.object({
+    eventId: z.string(),
   }),
+  // validateParams: (params) => ({
+  //   eventId: z.string().parse(params.eventId),
+  // }),
 });
 
 const adminEventsRoute = createRoute({

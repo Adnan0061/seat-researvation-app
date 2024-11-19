@@ -53,8 +53,13 @@ export function AdminEventsPage() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<Event> }) =>
-      eventApi.update(id, data),
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: Omit<Event, "id" | "availableSeats">;
+    }) => eventApi.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-events"] });
       toast({ title: "Event updated successfully" });
@@ -81,12 +86,16 @@ export function AdminEventsPage() {
     },
   });
 
-  const handleCreate = async (data: Omit<Event, "id">) => {
-    await createMutation.mutateAsync(data);
+  const handleCreate = async (data: Omit<Event, "id" | "availableSeats">) => {
+    const eventData = {
+      ...data,
+      availableSeats: data.totalSeats,
+    };
+    await createMutation.mutateAsync(eventData);
     setIsFormOpen(false);
   };
 
-  const handleUpdate = async (data: Omit<Event, "id">) => {
+  const handleUpdate = async (data: Omit<Event, "id" | "availableSeats">) => {
     if (selectedEvent) {
       await updateMutation.mutateAsync({
         id: selectedEvent.id,
