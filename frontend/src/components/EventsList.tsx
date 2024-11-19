@@ -40,11 +40,7 @@ export function EventsList({ events }: EventsListProps) {
                 <span className="font-medium">Price:</span> ${event.price}
               </p>
             </div>
-            <Link
-              to="/events/$eventId"
-              params={{ eventId: event.id }}
-              className="mt-4 inline-block"
-            >
+            <Link to={`/events/${event.id}`} className="mt-4 inline-block">
               <Button variant="default">View Details</Button>
             </Link>
           </CardContent>
