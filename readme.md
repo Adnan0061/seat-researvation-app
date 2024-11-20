@@ -1,10 +1,6 @@
 # Event Reservation Project
 
-This is a full stack event reservation project. The backend is deployed on Render and the frontend is deployed on Vercel.
-
-## Backend URL
-
-[https://seat-researvation-app.onrender.com](https://seat-researvation-app.onrender.com)
+This is a full stack event reservation project. The backend is deployed on **Render** and the frontend is deployed on **Vercel**.
 
 ## Frontend URL
 
