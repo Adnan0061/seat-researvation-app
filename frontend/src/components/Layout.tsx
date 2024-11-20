@@ -4,6 +4,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { UserCircle } from "lucide-react";
@@ -34,12 +35,23 @@ export function Layout() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                  <DropdownMenuLabel className="text-sm font-normal text-muted-foreground border-b pb-2 mb-2">
+                    {user.name}
+                    <br />
+                    {user.email}
+                  </DropdownMenuLabel>
                   {user.role === "admin" && (
-                    <DropdownMenuItem asChild>
+                    <DropdownMenuItem
+                      asChild
+                      className="text-foreground hover:text-foreground/70 font-normal"
+                    >
                       <Link to="/admin/events">Manage Events</Link>
                     </DropdownMenuItem>
                   )}
-                  <DropdownMenuItem asChild>
+                  <DropdownMenuItem
+                    asChild
+                    className="text-foreground hover:text-foreground/70 font-normal"
+                  >
                     <Link to="/reservations">My Reservations</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>

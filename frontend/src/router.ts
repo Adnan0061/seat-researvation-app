@@ -28,13 +28,6 @@ const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/login",
   beforeLoad: async ({ context }) => {
-    // console.log("location", location);
-    // console.log("context", context);
-    // // authGuard({ to: location.pathname as "/login" });
-    // return authGuard(
-    //   { to: location.pathname as "/login" },
-    //   context as AuthContext
-    // );
     const { auth } = context as AuthContext;
     if (auth.user) {
       throw redirect({ to: "/" });
@@ -48,10 +41,6 @@ const registerRoute = createRoute({
   path: "/register",
   component: RegisterPage,
   beforeLoad: async ({ context }) => {
-    // return authGuard(
-    //   { to: location.pathname as "/login" },
-    //   context as AuthContext
-    // );
     const { auth } = context as AuthContext;
     if (auth.user) {
       throw redirect({ to: "/" });
@@ -72,9 +61,6 @@ const eventDetailRoute = createRoute({
   params: z.object({
     eventId: z.string(),
   }),
-  // validateParams: (params) => ({
-  //   eventId: z.string().parse(params.eventId),
-  // }),
 });
 
 const adminEventsRoute = createRoute({
@@ -94,7 +80,6 @@ const userReservationsRoute = createRoute({
   path: "/reservations",
   component: UserReservationsPage,
   beforeLoad: ({ context }) => {
-    console.log("context", context);
     const { auth } = context as AuthContext;
     if (!auth.user) {
       throw redirect({ to: "/login" });

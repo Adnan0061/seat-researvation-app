@@ -104,7 +104,6 @@ export function EventForm({ event, open, onClose, onSubmit }: EventFormProps) {
             <FormField
               control={form.control}
               name="date"
-              // defaultValue={event?.date}
               defaultValue={
                 event?.date
                   ? new Date(event.date).toISOString().slice(0, 16)
