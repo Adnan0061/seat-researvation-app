@@ -13,6 +13,6 @@ beforeEach(async () => {
   }
 });
 
-// afterAll(async () => {
-//   await disconnectDB();
-// });
+afterAll(async () => {
+  await disconnectDB();
+});
