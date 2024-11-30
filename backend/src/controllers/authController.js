@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const errorHandler = require("../middleware/errorHandler");
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -7,14 +8,15 @@ const generateToken = (id) => {
   });
 };
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
     const userExists = await User.findOne({ email });
     if (userExists) {
       res.status(400);
-      throw new Error("User already exists");
+      console.log("user exist test");
+      return next(new Error("User already exists"));
     }
 
     const user = await User.create({
@@ -23,6 +25,7 @@ const register = async (req, res) => {
       password,
     });
 
+    console.log("user exist test before res");
     res.status(201).json({
       id: user._id,
       name: user.name,
@@ -31,12 +34,13 @@ const register = async (req, res) => {
       token: generateToken(user._id),
     });
   } catch (error) {
+    console.log(error);
     res.status(400);
     throw error;
   }
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -53,7 +57,7 @@ const login = async (req, res) => {
       });
     } else {
       res.status(401);
-      throw new Error("Invalid email or password");
+      return next(new Error("Invalid email or password"));
     }
   } catch (error) {
     res.status(401);

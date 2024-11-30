@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
-const connectDB = require("./config/db");
+const { connectDB } = require("./config/db");
 const errorHandler = require("./middleware/errorHandler");
 
 // Routes
@@ -11,7 +11,9 @@ const eventRoutes = require("./routes/eventRoutes");
 const reservationRoutes = require("./routes/reservationRoutes");
 
 // Connect to database
-connectDB();
+if (process.env.NODE_ENV !== "test") {
+  connectDB();
+}
 
 const app = express();
 
