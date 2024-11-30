@@ -62,11 +62,6 @@ const deleteEvent = async (req, res) => {
 
 const getEvents = async (req, res) => {
   try {
-    // Check if mongoose is connected
-    // if (mongoose.connection.readyState !== 1) {
-    //   throw new Error("Database not connected");
-    // }
-
     const events = await Event.find({});
     // console.log("events", events);
     res.json(events);
