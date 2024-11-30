@@ -8,7 +8,7 @@ const createReservation = async (eventId, userId, numberOfSeats) => {
 
   try {
     const event = await Event.findById(eventId).session(session);
-    console.log("event before update", event);
+    // console.log("event before update", event);
 
     if (!event) {
       throw new Error("Event not found");
@@ -51,7 +51,7 @@ const createReservation = async (eventId, userId, numberOfSeats) => {
       ],
       { session }
     );
-    console.log("reservation", reservation[0]);
+    // console.log("reservation", reservation[0]);
     await session.commitTransaction();
     return reservation[0];
   } catch (error) {
