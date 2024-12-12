@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
 const User = require("../../src/models/User");
 const Event = require("../../src/models/Event");
 const { faker } = require("@faker-js/faker");
@@ -30,7 +29,7 @@ const createTestEvent = async (overrides = {}) => {
     availableSeats: 100,
     price: 100,
     version: 0,
-    ...overrides,
+    // ...overrides,
   });
 };
 
