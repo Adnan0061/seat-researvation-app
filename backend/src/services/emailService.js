@@ -26,7 +26,7 @@ const sendReservationConfirmation = async (user, reservation) => {
       subject: "Reservation Confirmation",
       html: `
                 <h1>Reservation Confirmation</h1>
-                <p>${user.name}</p>
+                <p>Hi, ${user.name}</p>
                 <p>Your reservation has been confirmed!</p>
                 <p>Number of seats: ${reservation.numberOfSeats}</p>
                 <p>Total price: $${reservation.totalPrice}</p>
