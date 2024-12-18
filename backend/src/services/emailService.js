@@ -18,14 +18,15 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendReservationConfirmation = async (userEmail, reservation) => {
+const sendReservationConfirmation = async (user, reservation) => {
   try {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: userEmail,
+      to: user.email,
       subject: "Reservation Confirmation",
       html: `
                 <h1>Reservation Confirmation</h1>
+                <p>${user.name}</p>
                 <p>Your reservation has been confirmed!</p>
                 <p>Number of seats: ${reservation.numberOfSeats}</p>
                 <p>Total price: $${reservation.totalPrice}</p>

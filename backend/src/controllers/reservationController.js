@@ -19,10 +19,10 @@ const createReservation = async (req, res) => {
       numberOfSeats
     );
 
-    console.log("reservation", reservation);
+    console.log("reservation", reservation, req.user);
     // Send confirmation email
     // if (process.env.NODE_ENV !== "test") {
-    await emailService.sendReservationConfirmation(req.user.email, reservation);
+    await emailService.sendReservationConfirmation(req.user, reservation);
     // }
     // console.log("req.user.email, reservation", req.user.email, reservation);
 
