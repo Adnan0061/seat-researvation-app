@@ -103,7 +103,7 @@ export const router = createRouter({
   context: {
     auth: undefined!,
   },
-  basepath: "/",
+  // basepath: "/",
   // notFound: () => {
   //   return (
   //     <div>
