@@ -25,6 +25,7 @@ export function EventDetailPage() {
   } = useQuery({
     queryKey: ["event", eventId],
     queryFn: () => eventApi.getById(eventId),
+    enabled: !!eventId,
   });
 
   const reserveMutation = useMutation({
@@ -57,6 +58,7 @@ export function EventDetailPage() {
     );
   }
 
+  // console.log("eventId", eventId, "event", event);
   return (
     <div className="max-w-4xl mx-auto">
       <div className="grid gap-6 md:grid-cols-3">

@@ -7,15 +7,24 @@ const createReservation = async (req, res) => {
   try {
     const { eventId, numberOfSeats } = req.body;
     const userId = req.user.id;
-
+    // console.log(
+    //   "eventId, userId, numberOfSeats",
+    //   eventId,
+    //   userId,
+    //   numberOfSeats
+    // );
     const reservation = await reservationService.createReservation(
       eventId,
       userId,
       numberOfSeats
     );
 
+    console.log("reservation", reservation, req.user);
     // Send confirmation email
-    await emailService.sendReservationConfirmation(req.user.email, reservation);
+    // if (process.env.NODE_ENV !== "test") {
+    await emailService.sendReservationConfirmation(req.user, reservation);
+    // }
+    // console.log("req.user.email, reservation", req.user.email, reservation);
 
     res.status(201).json(reservation);
   } catch (error) {

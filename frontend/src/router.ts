@@ -20,7 +20,7 @@ const indexRoute = createRoute({
   path: "/",
   component: HomePage,
   beforeLoad: () => {
-    console.log("Loading HomePage route");
+    // console.log("Loading HomePage route");
   },
 });
 

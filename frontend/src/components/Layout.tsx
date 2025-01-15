@@ -13,7 +13,7 @@ import { Outlet } from "@tanstack/react-router";
 
 export function Layout() {
   const { user, logout } = useAuth();
-  console.log("user at layout", user);
+  // console.log("user at layout", user);
   return (
     <div className="w-full h-full" data-component="layout">
       <header className="border-b w-full">

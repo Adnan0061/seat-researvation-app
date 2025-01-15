@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -25,8 +25,16 @@ const searchSchema = z.object({
 type SearchForm = z.infer<typeof searchSchema>;
 
 interface EventSearchProps {
-  onSearch: (params: SearchForm) => void;
+  onSearch: (params: EventFilters) => void;
   filters: EventFilters;
+}
+
+interface FormFieldComponentProps {
+  form: UseFormReturn<SearchForm>;
+  name: keyof SearchForm;
+  label: string;
+  type: string;
+  placeholder?: string;
 }
 
 export function EventSearch({ onSearch, filters }: EventSearchProps) {
@@ -42,83 +50,55 @@ export function EventSearch({ onSearch, filters }: EventSearchProps) {
         className="space-y-4 bg-card p-4 rounded-lg"
       >
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <FormField
-            control={form.control}
+          <FormFieldComponent
+            form={form}
             name="query"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Search</FormLabel>
-                <FormControl>
-                  <Input placeholder="Search events..." {...field} />
-                </FormControl>
-              </FormItem>
-            )}
+            label="Search"
+            type="text"
+            placeholder="Search events..."
           />
 
-          <FormField
-            control={form.control}
+          <FormFieldComponent
+            form={form}
             name="startDate"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Start Date</FormLabel>
-                <FormControl>
-                  <Input type="date" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
+            label="Start Date"
+            type="date"
           />
 
-          <FormField
-            control={form.control}
+          <FormFieldComponent
+            form={form}
             name="endDate"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>End Date</FormLabel>
-                <FormControl>
-                  <Input type="date" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
+            label="End Date"
+            type="date"
           />
 
-          <FormField
-            control={form.control}
+          <FormFieldComponent
+            form={form}
             name="minPrice"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Min Price</FormLabel>
-                <FormControl>
-                  <Input type="number" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
+            label="Min Price"
+            type="number"
           />
 
-          <FormField
-            control={form.control}
+          <FormFieldComponent
+            form={form}
             name="maxPrice"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Max Price</FormLabel>
-                <FormControl>
-                  <Input type="number" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
+            label="Max Price"
+            type="number"
           />
 
           <FormField
             control={form.control}
             name="hasAvailableSeats"
             render={({ field }) => (
-              <FormItem className="flex items-center space-x-2">
+              <FormItem className="flex items-end mb-2 space-x-2 space-y-0">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
+                    className="bg-white data-[state=checked]:bg-primary"
                   />
                 </FormControl>
-                <FormLabel>Available Seats Only</FormLabel>
+                <FormLabel className="pb-1">Available Seats Only</FormLabel>
               </FormItem>
             )}
           />
@@ -127,5 +107,29 @@ export function EventSearch({ onSearch, filters }: EventSearchProps) {
         <Button type="submit">Search</Button>
       </form>
     </Form>
+  );
+}
+
+function FormFieldComponent(props: FormFieldComponentProps) {
+  const { form, name, label, type, placeholder } = props;
+  return (
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>{label}</FormLabel>
+          <FormControl>
+            <Input
+              type={type}
+              placeholder={placeholder}
+              {...field}
+              value={field.value?.toString() ?? ""}
+              className={`${type === "date" && "bg-gray-200"}`}
+            />
+          </FormControl>
+        </FormItem>
+      )}
+    />
   );
 }

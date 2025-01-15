@@ -1,44 +1,27 @@
-import { useEffect } from "react";
-import { useEventsStore } from "@/stores/useEventsStore";
-// import { useStoreDebug } from "@/hooks/useStoreDebug";
 import { EventSearch } from "@/components/EventSearch";
-import { Spinner } from "@/components/ui/spinner";
-import { Button } from "@/components/ui/button";
 import { SearchedEventsList } from "@/components/SearchedEventsList";
+import { EventFilters } from "@/types/store";
+import { useState } from "react";
 
 export function EventsPage() {
-  const store = useEventsStore();
+  const [filters, setFilters] = useState<EventFilters>(
+    JSON.parse(localStorage.getItem("events-storage") || "{}")
+  );
 
-  // Debug store in development
-  // if (process.env.NODE_ENV === "development") {
-  //   useStoreDebug(useEventsStore, "Events");
-  // }
-
-  useEffect(() => {
-    store.fetchEvents();
-  }, []);
-
-  if (store.error) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-destructive">{store.error}</p>
-        <Button onClick={store.fetchEvents} variant="outline" className="mt-4">
-          Try Again
-        </Button>
-      </div>
+  const onFiltersChange = (newFilters: EventFilters) => {
+    const clearedFilters = Object.fromEntries(
+      Object.entries(newFilters).filter(([_, value]) => value !== undefined)
     );
-  }
+    const updatedFilters = { ...filters, ...clearedFilters };
+    localStorage.setItem("events-storage", JSON.stringify(updatedFilters));
+    setFilters(updatedFilters);
+  };
+
   return (
     <div className="space-y-6">
-      <EventSearch onSearch={store.setFilters} filters={store.filters} />
+      <EventSearch onSearch={onFiltersChange} filters={filters} />
 
-      {store.isLoading ? (
-        <div className="flex justify-center py-12">
-          <Spinner size="lg" />
-        </div>
-      ) : (
-        <SearchedEventsList events={store.events} />
-      )}
+      <SearchedEventsList filters={filters} />
     </div>
   );
 }

@@ -1,6 +1,5 @@
 const Event = require("../models/Event");
 const { validateSearchParams } = require("../utils/validation");
-const mongoose = require("mongoose");
 
 const createEvent = async (req, res) => {
   try {
@@ -62,15 +61,9 @@ const deleteEvent = async (req, res) => {
 };
 
 const getEvents = async (req, res) => {
-  console.log("getEvents request received");
   try {
-    // Check if mongoose is connected
-    if (mongoose.connection.readyState !== 1) {
-      throw new Error("Database not connected");
-    }
-
     const events = await Event.find({});
-    console.log("events", events);
+    // console.log("events", events);
     res.json(events);
   } catch (error) {
     console.error("Error in getEvents:", error);
@@ -104,7 +97,6 @@ const getEventById = async (req, res) => {
 
 const searchEvents = async (req, res) => {
   try {
-    console.log("searchEvents request received", req.query);
     const {
       query,
       startDate,
