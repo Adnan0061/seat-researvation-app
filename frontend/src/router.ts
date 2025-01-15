@@ -103,6 +103,14 @@ export const router = createRouter({
   context: {
     auth: undefined!,
   },
+  basepath: "/",
+  // notFound: () => {
+  //   return (
+  //     <div>
+  //       <h1>Page Not Found</h1>
+  //     </div>
+  //   )
+  // }
 });
 
 declare module "@tanstack/react-router" {
