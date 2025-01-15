@@ -31,7 +31,7 @@ interface EventFormProps {
 }
 
 export function EventForm({ event, open, onClose, onSubmit }: EventFormProps) {
-  console.log("event", event);
+  // console.log("event", event);
   const form = useForm<EventFormData>({
     resolver: zodResolver(eventSchema),
     defaultValues: /*event
@@ -43,22 +43,15 @@ export function EventForm({ event, open, onClose, onSubmit }: EventFormProps) {
       totalSeats: event?.totalSeats,
       price: event?.price,
     },
-    // : {
-    //     title: "",
-    //     description: "",
-    //     date: "",
-    //     totalSeats: 0,
-    //     price: 0,
-    //   },
   });
 
   const handleSubmit = async (data: EventFormData) => {
-    console.log("create event data", data);
+    // console.log("create event data", data);
     await onSubmit(data);
     onClose();
     form.reset();
   };
-  console.log("event", event);
+  // console.log("event", event);
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">

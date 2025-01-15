@@ -27,11 +27,11 @@ export interface EventsState {
 }
 
 export interface EventFilters {
-  query: string;
-  startDate: string | undefined;
-  endDate: string | undefined;
-  minPrice: string | undefined;
-  maxPrice: string | undefined;
+  query?: string;
+  startDate?: string | undefined;
+  endDate?: string | undefined;
+  minPrice?: string | undefined;
+  maxPrice?: string | undefined;
   hasAvailableSeats: boolean;
 }
 

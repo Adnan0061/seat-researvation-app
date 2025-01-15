@@ -46,7 +46,7 @@ export const useEventsStore = create<EventsState>()(
             minPrice: filters.minPrice || undefined,
             maxPrice: filters.maxPrice || undefined,
           });
-          console.log("events before set", events);
+          // console.log("events before set", events);
           set({ events: events, isLoading: false });
         } catch (error) {
           console.error(error);
@@ -61,7 +61,7 @@ export const useEventsStore = create<EventsState>()(
         set((state) => ({
           filters: { ...state.filters, ...newFilters },
         }));
-        console.log("setFilters", newFilters);
+        // console.log("setFilters", newFilters);
         get().fetchEvents();
       },
 
