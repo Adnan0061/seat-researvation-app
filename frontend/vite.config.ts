@@ -9,16 +9,16 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/",
-  server: {
-    port: 3000,
-  },
-  build: {
-    outDir: "dist",
-    rollupOptions: {
-      output: {
-        manualChunks: undefined,
-      },
-    },
-  },
+  // base: "/",
+  // server: {
+  //   port: 3000,
+  // },
+  // build: {
+  //   outDir: "dist",
+  //   rollupOptions: {
+  //     output: {
+  //       manualChunks: undefined,
+  //     },
+  //   },
+  // },
 });
