@@ -1,6 +1,5 @@
 const request = require("supertest");
 const app = require("../../src/app");
-const { createTestUser } = require("../utils/testUtils");
 
 describe("Auth Endpoints", () => {
   const userData = {
