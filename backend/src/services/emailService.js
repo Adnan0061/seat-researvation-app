@@ -21,7 +21,8 @@ const transporter = nodemailer.createTransport({
 const sendReservationConfirmation = async (user, reservation) => {
   try {
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      // from: process.env.EMAIL_USER,
+      from: `"Seat Reaservation App" <${process.env.EMAIL_USER_GMAIL}>`,
       to: user.email,
       subject: "Reservation Confirmation",
       html: `
