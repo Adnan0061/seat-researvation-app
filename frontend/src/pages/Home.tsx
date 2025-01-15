@@ -2,26 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { EventsList } from "@/components/EventsList";
 import { ArrowRight, Calendar } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { eventApi } from "@/lib/api";
-// import { useEventsStore } from "@/stores/useEventsStore";
 
 export function HomePage() {
-  // const { events } = useEventsStore((state) => ({
-  //   events: state.events.slice(0, 3), // Show only first 3 events
-  // }));
-  // console.log("Events from store:", events);
-
-  const {
-    data: events,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["all-events"],
-    queryFn: () => eventApi.getAll(),
-  });
-  console.log("Events from query:", events, isLoading, error);
-
   return (
     <div className="space-y-16 py-8">
       {/* Hero Section */}
@@ -58,7 +40,7 @@ export function HomePage() {
           </Button>
         </div>
 
-        {!!events && <EventsList events={events} />}
+        <EventsList />
       </section>
 
       {/* Features Section */}

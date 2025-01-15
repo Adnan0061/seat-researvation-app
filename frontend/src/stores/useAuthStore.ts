@@ -24,7 +24,7 @@ export const useAuthStore = create<AuthState>()(
 
           try {
             user = await authApi.validateToken();
-            console.log("user at store", user);
+            // console.log("user at store", user);
             set({ user, token, isLoading: false });
           } catch (error) {
             console.log("auth validation error", error);

@@ -30,7 +30,7 @@ export const authApi = {
       "/auth/login",
       credentials
     );
-    console.log("login data", data);
+    // console.log("login data", data);
     return data;
   },
 
@@ -43,7 +43,7 @@ export const authApi = {
       "/auth/register",
       userData
     );
-    console.log("register data", data);
+    // console.log("register data", data);
     return data;
   },
 
@@ -51,7 +51,7 @@ export const authApi = {
     const { data } = await api.get<{ success: boolean; data: User }>(
       "/auth/validate"
     );
-    console.log("validateToken data", data);
+    // console.log("validateToken data", data);
     return data.data;
   },
 };
@@ -77,7 +77,6 @@ export const eventApi = {
     maxPrice?: string;
     hasAvailableSeats?: boolean;
   }) => {
-    console.log("getAll params", params);
     const { data } = await api.get<SearchedEvents>("/events/search", {
       params,
     });
